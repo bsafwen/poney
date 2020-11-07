@@ -54,12 +54,12 @@ const computeWinningsV1 = (L: number, C: number, Pi: number[], N: number) => {
 const computeWinningsV2 = (L: number, C: number, Pi: number[], N: number) => {
   const groups = [];
   const sequence = [Pi.toString()];
-  
+
   let temp: number = Pi.shift()!;
 
   let offset = 0;
 
-  let earning = 0;
+  let earning: BigInt = BigInt(0);
 
   let max_places = L;
 
@@ -82,13 +82,13 @@ const computeWinningsV2 = (L: number, C: number, Pi: number[], N: number) => {
 
   let idx = 0;
   for (; idx < offset; idx++) {
-    earning += groups[idx];
+    earning = BigInt(groups[idx]) + BigInt(earning);
   }
 
   let rest = (max_rides - offset) % (groups.length - offset);
 
   for (; idx < groups.length; idx++) {
-    earning += groups[idx] * (Math.floor((max_rides - offset) / (groups.length - offset)) + (rest > 0 ? 1 : 0));
+    earning = BigInt(groups[idx]) * BigInt((Math.floor((max_rides - offset) / (groups.length - offset)) + (rest > 0 ? 1 : 0))) + BigInt(earning);
     rest--;
   }
   return earning;
